@@ -4,6 +4,8 @@
 import json
 import os
 
+from calculator import get_footprint_value, compute_water_footprint, validate_quantity
+
 
 # Path to the water footprint data file
 DATA_FILE = os.path.join("data", "water_footprints.json")
@@ -52,10 +54,63 @@ def display_menu():
 
 
 def calculate_footprint(data):
-    """Placeholder for the water footprint calculation feature."""
-    print("\n[Coming Soon] This feature will let you calculate")
-    print("the water footprint of daily-use items.")
-    print("It will be implemented in the next phase.\n")
+    """Ask the user for an item and quantity, then calculate and display
+    the water footprint.
+
+    Args:
+        data: Dictionary of items loaded from the JSON file.
+    """
+    if not data:
+        print("\nNo items available. Please check the data file.\n")
+        return
+
+    print("\n--- Calculate Water Footprint ---")
+    print("(Type the item name, e.g., 'rice', 'coffee', 'jeans')")
+
+    # Step 1: Get the item name from the user
+    item_name = input("\nEnter item name: ").strip()
+
+    if not item_name:
+        print("\nError: Item name cannot be empty.\n")
+        return
+
+    # Step 2: Look up the item in the dataset
+    item_info = get_footprint_value(item_name, data)
+
+    if item_info is None:
+        print(f"\nError: '{item_name}' was not found in the database.")
+        print("Use option 2 to view all available items.\n")
+        return
+
+    footprint_per_unit = item_info["water_footprint_litres"]
+    unit = item_info["unit"]
+    display_name = item_name.replace("_", " ").title()
+
+    # Step 3: Get the quantity from the user
+    quantity_str = input(f"Enter quantity (in {unit}): ").strip()
+
+    is_valid, result = validate_quantity(quantity_str)
+
+    if not is_valid:
+        # 'result' contains the error message
+        print(f"\nError: {result}\n")
+        return
+
+    quantity = result  # 'result' is the validated float value
+
+    # Step 4: Calculate the total water footprint
+    total_footprint = compute_water_footprint(footprint_per_unit, quantity)
+
+    # Step 5: Display the result
+    print("\n" + "=" * 45)
+    print("  Calculation Result")
+    print("=" * 45)
+    print(f"  Item          : {display_name}")
+    print(f"  Quantity      : {quantity} {unit}")
+    print(f"  Footprint/unit: {footprint_per_unit} litres per {unit}")
+    print(f"  Total         : {total_footprint:,.0f} litres")
+    print("=" * 45)
+    print()
 
 
 def view_items(data):
