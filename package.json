@@ -1,0 +1,12 @@
+{
+    "name": "water-footprint-calculator",
+    "version": "1.0.0",
+    "description": "A terminal/CLI application to calculate water footprints for daily-use items",
+    "main": "main.js",
+    "scripts": {
+        "start": "node main.js"
+    },
+    "keywords": ["water-footprint", "calculator", "cli", "environment"],
+    "author": "CodeCatalyst-07",
+    "license": "ISC"
+}

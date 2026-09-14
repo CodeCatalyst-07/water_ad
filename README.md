@@ -6,13 +6,13 @@
 
 Water is one of the most critical natural resources, yet most people are unaware of how much water goes into producing the everyday items they use — from the food they eat to the clothes they wear. This hidden water consumption is called a **water footprint**.
 
-This project uses digital technology (a Python-based terminal application) to help users understand and calculate the water footprint of common daily-use items.
+This project uses digital technology (a JavaScript/Node.js-based terminal application) to help users understand and calculate the water footprint of common daily-use items.
 
 ---
 
 ## Project Objective
 
-Build a simple, reliable, and easy-to-understand **terminal/CLI application** in Python that:
+Build a simple, reliable, and easy-to-understand **terminal/CLI application** in JavaScript (Node.js) that:
 
 - Stores water footprint data for common daily-use items (food, beverages, clothing, household products, etc.)
 - Allows users to look up items and see how much water is used to produce them
@@ -24,6 +24,8 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 
 ## Proposed Functionality
 
+| Feature | Description | Status |
+|---|---|---|
 | View all items | Display a list of all available items with their water footprint (litres per unit) | ✅ |
 | Search for an item | Search by name (case-insensitive, partial match supported) | ✅ |
 | Calculate footprint | Select an item, enter quantity, and see the water footprint | ✅ |
@@ -38,13 +40,13 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 
 | Component | Technology |
 |---|---|
-| Programming Language | Python 3 |
+| Programming Language | JavaScript (Node.js) |
 | Data Storage | JSON file (`data/water_footprints.json`) |
 | User Interface | Terminal / Command Line Interface (CLI) |
-| Libraries | Python standard library (`json`, `os`, `csv`, `datetime`) |
+| Modules | Node.js built-in modules (`fs`, `path`, `readline`) |
 | Version Control | Git and GitHub |
 
-No external frameworks, databases, or web servers are required.
+No external frameworks, databases, or web servers are required. Zero npm dependencies.
 
 ---
 
@@ -52,10 +54,11 @@ No external frameworks, databases, or web servers are required.
 
 ```
 water_ad/
-├── main.py                      # Entry point — runs the CLI application
+├── main.js                      # Entry point — runs the CLI application
+├── calculator.js                # Core calculation and search logic
 ├── data/
 │   └── water_footprints.json    # Water footprint data for daily-use items
-├── tests/                       # Test scripts (added in later phases)
+├── package.json                 # Node.js project configuration
 ├── README.md                    # Project documentation (this file)
 └── .gitignore                   # Git ignore rules
 ```
@@ -71,6 +74,7 @@ water_ad/
 | Phase 3 | Water footprint dataset and item listing | ✅ Done |
 | Phase 4 | Water footprint calculation logic | ✅ Done |
 | Phase 5 | Item search functionality | ✅ Done |
+| Phase 5.5 | Migration from Python to JavaScript/Node.js | ✅ Done |
 | Phase 6 | Multi-item daily summary and category browsing | 🔲 Planned |
 | Phase 7 | Save/export reports and water-saving tips | 🔲 Planned |
 | Phase 8 | Testing, validation, and final polish | 🔲 Planned |
@@ -84,11 +88,14 @@ water_ad/
 git clone https://github.com/CodeCatalyst-07/water_ad.git
 cd water_ad
 
-# Run the application (available from Phase 4 onwards)
-python main.py
+# Run the application
+npm start
+
+# Or directly with Node.js
+node main.js
 ```
 
-> **Note:** The application is currently in the setup phase. The calculator will be functional from Phase 4.
+> **Prerequisites:** Node.js must be installed on your system. No `npm install` is needed — the project uses only Node.js built-in modules.
 
 ---
 

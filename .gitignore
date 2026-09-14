@@ -1,12 +1,5 @@
-# Byte-compiled / optimized files
-__pycache__/
-*.py[cod]
-*$py.class
-
-# Virtual environments
-venv/
-env/
-.venv/
+# Node.js
+node_modules/
 
 # IDE files
 .vscode/
@@ -16,7 +9,5 @@ env/
 .DS_Store
 Thumbs.db
 
-# Distribution
-*.egg-info/
-dist/
-build/
+# Logs
+*.log
