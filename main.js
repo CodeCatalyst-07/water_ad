@@ -36,7 +36,15 @@ function loadData(filepath) {
     }
 
     try {
-        const fileContent = fs.readFileSync(filepath, "utf-8");
+        const fileContent = fs.readFileSync(filepath, "utf-8").trim();
+
+        // Check if the file is empty
+        if (!fileContent) {
+            console.log(`\nWarning: Data file '${filepath}' is empty.`);
+            console.log("The application will run with no items loaded.\n");
+            return {};
+        }
+
         const data = JSON.parse(fileContent);
 
         // Basic check — data should be an object (not an array or null)
@@ -132,8 +140,9 @@ function saveHistory(filepath, record) {
  * @returns {string} A human-readable version of the key.
  */
 function formatItemName(key) {
-    return key
+    return String(key)
         .replace(/_/g, " ")
+        .toLowerCase()
         .replace(/\b\w/g, (char) => char.toUpperCase());
 }
 
@@ -145,6 +154,9 @@ function formatItemName(key) {
  * @returns {string} The formatted number string.
  */
 function formatNumber(num) {
+    if (typeof num !== "number" || isNaN(num) || !Number.isFinite(num)) {
+        return "0";
+    }
     return Math.round(num).toLocaleString();
 }
 
@@ -156,6 +168,9 @@ function formatNumber(num) {
  * @returns {string} The formatted decimal string.
  */
 function formatDecimal(num) {
+    if (typeof num !== "number" || isNaN(num) || !Number.isFinite(num)) {
+        return "0";
+    }
     if (num % 1 === 0) {
         return num.toLocaleString();
     }
@@ -270,7 +285,8 @@ async function calculateFootprint(data, askQuestion, historyFile = HISTORY_FILE)
 
     const footprintPerUnit = itemInfo.water_footprint_litres;
     const unit = itemInfo.unit;
-    const displayName = formatItemName(itemName);
+    const lookupKey = itemName.toLowerCase().trim().replace(/\s+/g, "_");
+    const displayName = formatItemName(lookupKey);
 
     // Step 3: Get the quantity from the user
     const quantityStr = (await askQuestion(`Enter quantity (in ${unit}): `)).trim();

@@ -80,9 +80,10 @@ water_ad/
 | Phase 5.5 | Migration from Python to JavaScript/Node.js | ✅ Done |
 | Phase 6 | Persistent calculation history | ✅ Done |
 | Phase 7 | Calculation statistics | ✅ Done |
-| Phase 8 | Multi-item daily summary and category browsing | 🔲 Planned |
-| Phase 9 | Save/export reports and water-saving tips | 🔲 Planned |
-| Phase 10 | Testing, validation, and final polish | 🔲 Planned |
+| Phase 8 | Complete application validation and robustness | ✅ Done |
+| Phase 9 | Multi-item daily summary and category browsing | 🔲 Planned |
+| Phase 10 | Save/export reports and water-saving tips | 🔲 Planned |
+| Phase 11 | Final polish and release | 🔲 Planned |
 
 ---
 

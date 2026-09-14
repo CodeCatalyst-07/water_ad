@@ -10,9 +10,13 @@
  * @returns {object|null} Item info object if found, or null if not found.
  */
 function getFootprintValue(itemName, data) {
-    // Convert to lowercase to make the search case-insensitive
-    // Also replace spaces with underscores to match JSON keys
-    const lookupKey = itemName.toLowerCase().trim().replace(/ /g, "_");
+    if (!itemName || typeof itemName !== "string" || !data || typeof data !== "object") {
+        return null;
+    }
+
+    // Convert to lowercase and trim
+    // Also replace one or more spaces with an underscore to match JSON keys
+    const lookupKey = itemName.toLowerCase().trim().replace(/\s+/g, "_");
 
     if (data[lookupKey]) {
         return data[lookupKey];
@@ -52,7 +56,8 @@ function validateQuantity(quantityStr) {
     // Try to convert to a number
     const num = Number(quantityStr);
 
-    if (isNaN(num)) {
+    // Check for NaN and non-finite numbers (e.g., Infinity)
+    if (isNaN(num) || !Number.isFinite(num)) {
         return { isValid: false, value: `'${quantityStr}' is not a valid number.` };
     }
 
@@ -76,7 +81,14 @@ function validateQuantity(quantityStr) {
  *     Returns an empty array if no items match.
  */
 function searchItems(searchTerm, data) {
+    if (!searchTerm || typeof searchTerm !== "string" || !data || typeof data !== "object") {
+        return [];
+    }
+
     const searchLower = searchTerm.toLowerCase().trim();
+    if (!searchLower) {
+        return [];
+    }
 
     const matches = [];
     for (const [itemKey, itemInfo] of Object.entries(data)) {
@@ -112,9 +124,11 @@ function calculateStatistics(history) {
     let highestCalculation = history[0];
 
     for (const record of history) {
-        totalWaterFootprint += record.total_footprint;
+        const footprint = typeof record.total_footprint === "number" ? record.total_footprint : 0;
+        totalWaterFootprint += footprint;
 
-        if (record.total_footprint > highestCalculation.total_footprint) {
+        const highestVal = typeof highestCalculation.total_footprint === "number" ? highestCalculation.total_footprint : 0;
+        if (footprint > highestVal) {
             highestCalculation = record;
         }
     }
@@ -125,8 +139,8 @@ function calculateStatistics(history) {
         totalCalculations,
         totalWaterFootprint,
         averageFootprint,
-        highestItem: highestCalculation.item_name,
-        highestFootprint: highestCalculation.total_footprint,
+        highestItem: highestCalculation.item_name || "Unknown",
+        highestFootprint: highestCalculation.total_footprint || 0,
     };
 }
 
