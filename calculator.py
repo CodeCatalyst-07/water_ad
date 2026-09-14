@@ -66,3 +66,30 @@ def validate_quantity(quantity_str):
         return (False, "Quantity must be greater than zero.")
 
     return (True, value)
+
+
+def search_items(search_term, data):
+    """Search for items whose name contains the search term.
+
+    The search is case-insensitive and supports partial matches.
+    For example, searching "ch" would match "chicken", "chocolate", "cheese".
+
+    Args:
+        search_term: The text the user typed to search for.
+        data: The dictionary of all items loaded from the JSON file.
+
+    Returns:
+        A list of tuples: [(item_key, item_info), ...]
+        Each tuple contains the item's JSON key and its info dictionary.
+        Returns an empty list if no items match.
+    """
+    search_lower = search_term.lower().strip()
+
+    matches = []
+    for item_key, item_info in data.items():
+        # Compare against the key (with underscores replaced by spaces)
+        readable_name = item_key.replace("_", " ")
+        if search_lower in readable_name:
+            matches.append((item_key, item_info))
+
+    return matches

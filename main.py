@@ -4,7 +4,8 @@
 import json
 import os
 
-from calculator import get_footprint_value, compute_water_footprint, validate_quantity
+from calculator import (get_footprint_value, compute_water_footprint,
+                        validate_quantity, search_items)
 
 
 # Path to the water footprint data file
@@ -49,7 +50,8 @@ def display_menu():
     print("\nPlease choose an option:\n")
     print("  1. Calculate Water Footprint")
     print("  2. View Available Items")
-    print("  3. Exit")
+    print("  3. Search Item")
+    print("  4. Exit")
     print()
 
 
@@ -146,6 +148,49 @@ def view_items(data):
     print(f"  Total items: {len(data)}\n")
 
 
+def search_item(data):
+    """Search for items by name and display matching results.
+
+    The search is case-insensitive and supports partial matches.
+    For example, typing 'ch' will find chicken, chocolate, and cheese.
+
+    Args:
+        data: Dictionary of items loaded from the JSON file.
+    """
+    if not data:
+        print("\nNo items available. Please check the data file.\n")
+        return
+
+    print("\n--- Search Items ---")
+    search_term = input("Enter search term: ").strip()
+
+    if not search_term:
+        print("\nError: Search term cannot be empty.\n")
+        return
+
+    # Use the search function from calculator.py
+    matches = search_items(search_term, data)
+
+    if not matches:
+        print(f"\nNo items found matching '{search_term}'.")
+        print("Try a different keyword or use option 2 to see all items.\n")
+        return
+
+    # Display the matching results
+    print(f"\nFound {len(matches)} item(s) matching '{search_term}':\n")
+    print(f"  {'No.':<5} {'Item':<18} {'Water (litres)':<16} {'Per Unit'}")
+    print("  " + "-" * 55)
+
+    for index, (item_key, item_info) in enumerate(matches, start=1):
+        display_name = item_key.replace("_", " ").title()
+        water = item_info.get("water_footprint_litres", "N/A")
+        unit = item_info.get("unit", "N/A")
+        print(f"  {index:<5} {display_name:<18} {water:<16} {unit}")
+
+    print("  " + "-" * 55)
+    print()
+
+
 def main():
     """Main function — runs the menu loop until the user exits."""
     # Display the application title
@@ -160,18 +205,20 @@ def main():
     while True:
         display_menu()
 
-        choice = input("Enter your choice (1/2/3): ").strip()
+        choice = input("Enter your choice (1/2/3/4): ").strip()
 
         if choice == "1":
             calculate_footprint(data)
         elif choice == "2":
             view_items(data)
         elif choice == "3":
+            search_item(data)
+        elif choice == "4":
             print("\nThank you for using the Water Footprint Calculator!")
             print("Save water, save life.\n")
             break
         else:
-            print("\nInvalid choice! Please enter 1, 2, or 3.")
+            print("\nInvalid choice! Please enter 1, 2, 3, or 4.")
 
 
 if __name__ == "__main__":

@@ -24,15 +24,13 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 
 ## Proposed Functionality
 
-| Feature | Description |
-|---|---|
-| View all items | Display a list of all available items with their water footprint (litres per unit) |
-| Search for an item | Look up a specific item by name |
-| Calculate footprint | Select an item, enter quantity, and see the water footprint |
-| Daily summary | Add multiple items and view total water footprint for the day |
-| Category browsing | Browse items by category (Food, Beverages, Clothing, etc.) |
-| Save report | Save the calculation summary to a file for future reference |
-| Water-saving tips | Display tips on how to reduce water footprint |
+| View all items | Display a list of all available items with their water footprint (litres per unit) | ✅ |
+| Search for an item | Search by name (case-insensitive, partial match supported) | ✅ |
+| Calculate footprint | Select an item, enter quantity, and see the water footprint | ✅ |
+| Daily summary | Add multiple items and view total water footprint for the day | 🔲 |
+| Category browsing | Browse items by category (Food, Beverages, Clothing, etc.) | 🔲 |
+| Save report | Save the calculation summary to a file for future reference | 🔲 |
+| Water-saving tips | Display tips on how to reduce water footprint | 🔲 |
 
 ---
 
@@ -71,10 +69,11 @@ water_ad/
 | Phase 1 | Project setup, structure, and documentation | ✅ Done |
 | Phase 2 | Basic terminal menu with navigation | ✅ Done |
 | Phase 3 | Water footprint dataset and item listing | ✅ Done |
-| Phase 4 | CLI interface with menu-driven interaction | 🔲 Planned |
-| Phase 5 | Multi-item daily summary and category browsing | 🔲 Planned |
-| Phase 6 | Save/export reports and water-saving tips | 🔲 Planned |
-| Phase 7 | Testing, validation, and final polish | 🔲 Planned |
+| Phase 4 | Water footprint calculation logic | ✅ Done |
+| Phase 5 | Item search functionality | ✅ Done |
+| Phase 6 | Multi-item daily summary and category browsing | 🔲 Planned |
+| Phase 7 | Save/export reports and water-saving tips | 🔲 Planned |
+| Phase 8 | Testing, validation, and final polish | 🔲 Planned |
 
 ---
 
