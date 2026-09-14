@@ -15,6 +15,9 @@ const {
 // Path to the water footprint data file
 const DATA_FILE = path.join(__dirname, "data", "water_footprints.json");
 
+// Path to the calculation history file
+const HISTORY_FILE = path.join(__dirname, "data", "history.json");
+
 // ─── Data Loading ───────────────────────────────────────────
 
 /**
@@ -47,6 +50,75 @@ function loadData(filepath) {
         console.log(`\nWarning: Data file '${filepath}' contains invalid JSON.`);
         console.log("The application will run with no items loaded.\n");
         return {};
+    }
+}
+
+// ─── History Management ─────────────────────────────────────
+
+/**
+ * Load calculation history from a JSON file.
+ *
+ * Safely handles:
+ *  - File does not exist -> returns empty array
+ *  - File is empty -> returns empty array
+ *  - File contains invalid JSON -> returns empty array with warning
+ *  - File contains unexpected format (not an array) -> returns empty array with warning
+ *
+ * @param {string} filepath - Path to the history JSON file.
+ * @returns {Array} Array of calculation history objects.
+ */
+function loadHistory(filepath) {
+    if (!fs.existsSync(filepath)) {
+        return [];
+    }
+
+    try {
+        const fileContent = fs.readFileSync(filepath, "utf-8").trim();
+
+        // If the file is completely empty, return an empty list
+        if (!fileContent) {
+            return [];
+        }
+
+        const data = JSON.parse(fileContent);
+
+        // History must be a JSON array of records
+        if (!Array.isArray(data)) {
+            console.log("\nWarning: History file is corrupted (expected a list). Starting fresh.");
+            return [];
+        }
+
+        return data;
+    } catch (error) {
+        console.log("\nWarning: History file contains invalid JSON.");
+        return [];
+    }
+}
+
+/**
+ * Save a new calculation record to the history JSON file.
+ *
+ * @param {string} filepath - Path to the history JSON file.
+ * @param {object} record - The calculation record to append.
+ */
+function saveHistory(filepath, record) {
+    // Load existing history (handles missing/empty/corrupted files safely)
+    const history = loadHistory(filepath);
+
+    // Append the new calculation record
+    history.push(record);
+
+    try {
+        // Ensure the parent directory exists
+        const dir = path.dirname(filepath);
+        if (!fs.existsSync(dir)) {
+            fs.mkdirSync(dir, { recursive: true });
+        }
+
+        // Write the updated history with 2-space indentation for readability
+        fs.writeFileSync(filepath, JSON.stringify(history, null, 2), "utf-8");
+    } catch (error) {
+        console.log(`\nWarning: Could not save calculation to history: ${error.message}\n`);
     }
 }
 
@@ -96,7 +168,8 @@ function displayMenu() {
     console.log("  1. Calculate Water Footprint");
     console.log("  2. View Available Items");
     console.log("  3. Search Item");
-    console.log("  4. Exit");
+    console.log("  4. View Calculation History");
+    console.log("  5. Exit");
     console.log();
 }
 
@@ -141,13 +214,14 @@ function viewItems(data) {
 
 /**
  * Ask the user for an item and quantity, then calculate and display
- * the water footprint.
+ * the water footprint. Saves the calculation to history upon success.
  *
  * @param {object} data - Dictionary of items loaded from the JSON file.
  * @param {function} askQuestion - Function to ask the user a question.
+ * @param {string} historyFile - Path to the history JSON file.
  * @returns {Promise<void>}
  */
-async function calculateFootprint(data, askQuestion) {
+async function calculateFootprint(data, askQuestion, historyFile = HISTORY_FILE) {
     const keys = Object.keys(data);
 
     if (keys.length === 0) {
@@ -205,6 +279,18 @@ async function calculateFootprint(data, askQuestion) {
     console.log(`  Total         : ${formatNumber(totalFootprint)} litres`);
     console.log("=".repeat(45));
     console.log();
+
+    // Step 6: Save calculation to history
+    const record = {
+        item_name: displayName,
+        quantity: quantity,
+        unit: unit,
+        water_footprint_per_unit: footprintPerUnit,
+        total_footprint: totalFootprint,
+        date_time: new Date().toLocaleString(),
+    };
+    saveHistory(historyFile, record);
+    console.log("  ✓ Calculation saved to history.\n");
 }
 
 // ─── Feature: Search Item ───────────────────────────────────
@@ -257,6 +343,48 @@ async function searchItem(data, askQuestion) {
     console.log();
 }
 
+// ─── Feature: View Calculation History ──────────────────────
+
+/**
+ * Display previous calculations in a clean and readable terminal format.
+ *
+ * @param {string} filepath - Path to the history JSON file.
+ */
+function viewHistory(filepath) {
+    const history = loadHistory(filepath);
+
+    if (history.length === 0) {
+        console.log("\nNo calculation history found.\n");
+        return;
+    }
+
+    console.log("\n" + "=".repeat(85));
+    console.log("  Calculation History");
+    console.log("=".repeat(85));
+
+    // Print table header
+    console.log(
+        `\n  ${padRight("No.", 5)} ${padRight("Date/Time", 24)} ${padRight("Item", 16)} ${padRight("Quantity", 12)} ${padRight("Per Unit", 14)} Total (litres)`
+    );
+    console.log("  " + "-".repeat(85));
+
+    // Print each calculation record
+    history.forEach((record, index) => {
+        const dateTime = record.date_time || "N/A";
+        const item = record.item_name || "N/A";
+        const qty = `${record.quantity} ${record.unit || ""}`.trim();
+        const perUnit = `${formatNumber(record.water_footprint_per_unit)} L`;
+        const total = `${formatNumber(record.total_footprint)} L`;
+
+        console.log(
+            `  ${padRight(index + 1, 5)} ${padRight(dateTime, 24)} ${padRight(item, 16)} ${padRight(qty, 12)} ${padRight(perUnit, 14)} ${total}`
+        );
+    });
+
+    console.log("  " + "-".repeat(85));
+    console.log(`  Total calculations recorded: ${history.length}\n`);
+}
+
 // ─── Main Application ───────────────────────────────────────
 
 /**
@@ -291,20 +419,22 @@ async function main() {
     while (running) {
         displayMenu();
 
-        const choice = (await askQuestion("Enter your choice (1/2/3/4): ")).trim();
+        const choice = (await askQuestion("Enter your choice (1/2/3/4/5): ")).trim();
 
         if (choice === "1") {
-            await calculateFootprint(data, askQuestion);
+            await calculateFootprint(data, askQuestion, HISTORY_FILE);
         } else if (choice === "2") {
             viewItems(data);
         } else if (choice === "3") {
             await searchItem(data, askQuestion);
         } else if (choice === "4") {
+            viewHistory(HISTORY_FILE);
+        } else if (choice === "5") {
             console.log("\nThank you for using the Water Footprint Calculator!");
             console.log("Save water, save life.\n");
             running = false;
         } else {
-            console.log("\nInvalid choice! Please enter 1, 2, 3, or 4.");
+            console.log("\nInvalid choice! Please enter 1, 2, 3, 4, or 5.");
         }
     }
 
@@ -312,5 +442,16 @@ async function main() {
     rl.close();
 }
 
-// Run the application
-main();
+// Run the application when executed directly
+if (require.main === module) {
+    main();
+}
+
+// Export functions for testing and modularity
+module.exports = {
+    loadData,
+    loadHistory,
+    saveHistory,
+    viewHistory,
+    calculateFootprint,
+};

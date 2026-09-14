@@ -29,6 +29,7 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 | View all items | Display a list of all available items with their water footprint (litres per unit) | ✅ |
 | Search for an item | Search by name (case-insensitive, partial match supported) | ✅ |
 | Calculate footprint | Select an item, enter quantity, and see the water footprint | ✅ |
+| Calculation history | View previously calculated water footprints with date/time and totals | ✅ |
 | Daily summary | Add multiple items and view total water footprint for the day | 🔲 |
 | Category browsing | Browse items by category (Food, Beverages, Clothing, etc.) | 🔲 |
 | Save report | Save the calculation summary to a file for future reference | 🔲 |
@@ -41,7 +42,7 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 | Component | Technology |
 |---|---|
 | Programming Language | JavaScript (Node.js) |
-| Data Storage | JSON file (`data/water_footprints.json`) |
+| Data Storage | JSON files (`data/water_footprints.json`, `data/history.json`) |
 | User Interface | Terminal / Command Line Interface (CLI) |
 | Modules | Node.js built-in modules (`fs`, `path`, `readline`) |
 | Version Control | Git and GitHub |
@@ -57,7 +58,8 @@ water_ad/
 ├── main.js                      # Entry point — runs the CLI application
 ├── calculator.js                # Core calculation and search logic
 ├── data/
-│   └── water_footprints.json    # Water footprint data for daily-use items
+│   ├── water_footprints.json    # Water footprint data for daily-use items
+│   └── history.json             # Calculation history log
 ├── package.json                 # Node.js project configuration
 ├── README.md                    # Project documentation (this file)
 └── .gitignore                   # Git ignore rules
@@ -75,9 +77,10 @@ water_ad/
 | Phase 4 | Water footprint calculation logic | ✅ Done |
 | Phase 5 | Item search functionality | ✅ Done |
 | Phase 5.5 | Migration from Python to JavaScript/Node.js | ✅ Done |
-| Phase 6 | Multi-item daily summary and category browsing | 🔲 Planned |
-| Phase 7 | Save/export reports and water-saving tips | 🔲 Planned |
-| Phase 8 | Testing, validation, and final polish | 🔲 Planned |
+| Phase 6 | Persistent calculation history | ✅ Done |
+| Phase 7 | Multi-item daily summary and category browsing | 🔲 Planned |
+| Phase 8 | Save/export reports and water-saving tips | 🔲 Planned |
+| Phase 9 | Testing, validation, and final polish | 🔲 Planned |
 
 ---
 
