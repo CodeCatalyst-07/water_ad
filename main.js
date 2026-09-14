@@ -10,6 +10,7 @@ const {
     computeWaterFootprint,
     validateQuantity,
     searchItems,
+    calculateStatistics,
 } = require("./calculator");
 
 // Path to the water footprint data file
@@ -148,6 +149,23 @@ function formatNumber(num) {
 }
 
 /**
+ * Format a decimal number with commas and up to 2 decimal places.
+ * For example: 2306.25 becomes "2,306.25", 2500 becomes "2,500".
+ *
+ * @param {number} num - The number to format.
+ * @returns {string} The formatted decimal string.
+ */
+function formatDecimal(num) {
+    if (num % 1 === 0) {
+        return num.toLocaleString();
+    }
+    return num.toLocaleString(undefined, {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+    });
+}
+
+/**
  * Pad a string to a fixed width (for table formatting).
  *
  * @param {string|number} text - The text to pad.
@@ -169,7 +187,8 @@ function displayMenu() {
     console.log("  2. View Available Items");
     console.log("  3. Search Item");
     console.log("  4. View Calculation History");
-    console.log("  5. Exit");
+    console.log("  5. View Statistics");
+    console.log("  6. Exit");
     console.log();
 }
 
@@ -385,6 +404,33 @@ function viewHistory(filepath) {
     console.log(`  Total calculations recorded: ${history.length}\n`);
 }
 
+// ─── Feature: View Statistics ───────────────────────────────
+
+/**
+ * Display calculation statistics based on the calculation history.
+ *
+ * @param {string} filepath - Path to the history JSON file.
+ */
+function viewStatistics(filepath) {
+    const history = loadHistory(filepath);
+    const stats = calculateStatistics(history);
+
+    if (!stats) {
+        console.log("\nNo calculation history available.\n");
+        return;
+    }
+
+    console.log("\n" + "=".repeat(45));
+    console.log("  CALCULATION STATISTICS");
+    console.log("=".repeat(45));
+    console.log(`  Total calculations      : ${stats.totalCalculations}`);
+    console.log(`  Total water footprint   : ${formatNumber(stats.totalWaterFootprint)} L`);
+    console.log(`  Average per calculation : ${formatDecimal(stats.averageFootprint)} L`);
+    console.log(`  Highest footprint item  : ${stats.highestItem} (${formatNumber(stats.highestFootprint)} L)`);
+    console.log("=".repeat(45));
+    console.log();
+}
+
 // ─── Main Application ───────────────────────────────────────
 
 /**
@@ -419,7 +465,7 @@ async function main() {
     while (running) {
         displayMenu();
 
-        const choice = (await askQuestion("Enter your choice (1/2/3/4/5): ")).trim();
+        const choice = (await askQuestion("Enter your choice (1/2/3/4/5/6): ")).trim();
 
         if (choice === "1") {
             await calculateFootprint(data, askQuestion, HISTORY_FILE);
@@ -430,11 +476,13 @@ async function main() {
         } else if (choice === "4") {
             viewHistory(HISTORY_FILE);
         } else if (choice === "5") {
+            viewStatistics(HISTORY_FILE);
+        } else if (choice === "6") {
             console.log("\nThank you for using the Water Footprint Calculator!");
             console.log("Save water, save life.\n");
             running = false;
         } else {
-            console.log("\nInvalid choice! Please enter 1, 2, 3, 4, or 5.");
+            console.log("\nInvalid choice! Please enter 1, 2, 3, 4, 5, or 6.");
         }
     }
 
@@ -453,5 +501,6 @@ module.exports = {
     loadHistory,
     saveHistory,
     viewHistory,
+    viewStatistics,
     calculateFootprint,
 };

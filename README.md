@@ -30,6 +30,7 @@ Build a simple, reliable, and easy-to-understand **terminal/CLI application** in
 | Search for an item | Search by name (case-insensitive, partial match supported) | ✅ |
 | Calculate footprint | Select an item, enter quantity, and see the water footprint | ✅ |
 | Calculation history | View previously calculated water footprints with date/time and totals | ✅ |
+| Calculation statistics | Summary metrics: total count, total water, average, and highest item | ✅ |
 | Daily summary | Add multiple items and view total water footprint for the day | 🔲 |
 | Category browsing | Browse items by category (Food, Beverages, Clothing, etc.) | 🔲 |
 | Save report | Save the calculation summary to a file for future reference | 🔲 |
@@ -78,9 +79,10 @@ water_ad/
 | Phase 5 | Item search functionality | ✅ Done |
 | Phase 5.5 | Migration from Python to JavaScript/Node.js | ✅ Done |
 | Phase 6 | Persistent calculation history | ✅ Done |
-| Phase 7 | Multi-item daily summary and category browsing | 🔲 Planned |
-| Phase 8 | Save/export reports and water-saving tips | 🔲 Planned |
-| Phase 9 | Testing, validation, and final polish | 🔲 Planned |
+| Phase 7 | Calculation statistics | ✅ Done |
+| Phase 8 | Multi-item daily summary and category browsing | 🔲 Planned |
+| Phase 9 | Save/export reports and water-saving tips | 🔲 Planned |
+| Phase 10 | Testing, validation, and final polish | 🔲 Planned |
 
 ---
 

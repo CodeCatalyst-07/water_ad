@@ -90,10 +90,51 @@ function searchItems(searchTerm, data) {
     return matches;
 }
 
+/**
+ * Calculate summary statistics from the calculation history.
+ *
+ * Computes:
+ *  - Total number of calculations
+ *  - Total estimated water footprint across all calculations
+ *  - Average water footprint per calculation
+ *  - Item and footprint for the calculation with the highest footprint
+ *
+ * @param {Array} history - Array of previous calculation records.
+ * @returns {object|null} Statistics object, or null if history is empty.
+ */
+function calculateStatistics(history) {
+    if (!history || !Array.isArray(history) || history.length === 0) {
+        return null;
+    }
+
+    const totalCalculations = history.length;
+    let totalWaterFootprint = 0;
+    let highestCalculation = history[0];
+
+    for (const record of history) {
+        totalWaterFootprint += record.total_footprint;
+
+        if (record.total_footprint > highestCalculation.total_footprint) {
+            highestCalculation = record;
+        }
+    }
+
+    const averageFootprint = totalWaterFootprint / totalCalculations;
+
+    return {
+        totalCalculations,
+        totalWaterFootprint,
+        averageFootprint,
+        highestItem: highestCalculation.item_name,
+        highestFootprint: highestCalculation.total_footprint,
+    };
+}
+
 // Export all functions so main.js can use them
 module.exports = {
     getFootprintValue,
     computeWaterFootprint,
     validateQuantity,
     searchItems,
+    calculateStatistics,
 };
