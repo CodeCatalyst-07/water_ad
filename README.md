@@ -69,8 +69,8 @@ water_ad/
 | Phase | Description | Status |
 |---|---|---|
 | Phase 1 | Project setup, structure, and documentation | ✅ Done |
-| Phase 2 | Water footprint data collection and storage | 🔲 Planned |
-| Phase 3 | Core calculator logic and single-item lookup | 🔲 Planned |
+| Phase 2 | Basic terminal menu with navigation | ✅ Done |
+| Phase 3 | Water footprint dataset and item listing | ✅ Done |
 | Phase 4 | CLI interface with menu-driven interaction | 🔲 Planned |
 | Phase 5 | Multi-item daily summary and category browsing | 🔲 Planned |
 | Phase 6 | Save/export reports and water-saving tips | 🔲 Planned |
@@ -95,11 +95,19 @@ python main.py
 
 ## Data Sources
 
-Water footprint values are based on publicly available research from:
+The water footprint values used in this project are **approximate estimates** based on publicly available research. They represent the total amount of freshwater used to produce one unit of an item (including growing, processing, and transportation).
 
-- [Water Footprint Network](https://waterfootprint.org)
-- Mekonnen & Hoekstra (2011) — "The water footprint of humanity"
-- UNESCO-IHE Institute for Water Education
+**Primary references:**
+
+- **Water Footprint Network** — [waterfootprint.org](https://waterfootprint.org/en/resources/interactive-tools/product-gallery/)  
+  Provides a product gallery with water footprint values for common food, beverages, and industrial products.
+
+- **Mekonnen, M.M. & Hoekstra, A.Y. (2011)** — *"The green, blue and grey water footprint of crops and derived crop products"*, Hydrology and Earth System Sciences, 15(5), 1577–1600.  
+  This study provides detailed water footprint data for agricultural products worldwide.
+
+- **UNESCO-IHE Institute for Water Education** — Research reports on water footprints for consumer goods.
+
+> **Disclaimer:** The values in this project are global averages for educational purposes. Actual water footprints vary significantly based on region, farming methods, climate, and production processes.
 
 ---
 

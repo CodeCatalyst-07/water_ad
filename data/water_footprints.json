@@ -1,4 +1,127 @@
 {
-    "_comment": "Water footprint data will be added in Phase 2. Values will be in litres per unit.",
-    "items": []
+    "rice": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 2500
+    },
+    "wheat": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 1827
+    },
+    "milk": {
+        "category": "Beverages",
+        "unit": "litre",
+        "water_footprint_litres": 1020
+    },
+    "tea": {
+        "category": "Beverages",
+        "unit": "cup (250ml)",
+        "water_footprint_litres": 27
+    },
+    "coffee": {
+        "category": "Beverages",
+        "unit": "cup (250ml)",
+        "water_footprint_litres": 132
+    },
+    "chicken": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 4325
+    },
+    "egg": {
+        "category": "Food",
+        "unit": "piece",
+        "water_footprint_litres": 196
+    },
+    "apple": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 822
+    },
+    "banana": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 790
+    },
+    "potato": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 287
+    },
+    "tomato": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 214
+    },
+    "sugar": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 1782
+    },
+    "cotton_shirt": {
+        "category": "Clothing",
+        "unit": "piece",
+        "water_footprint_litres": 2700
+    },
+    "jeans": {
+        "category": "Clothing",
+        "unit": "piece",
+        "water_footprint_litres": 8000
+    },
+    "leather_shoes": {
+        "category": "Clothing",
+        "unit": "pair",
+        "water_footprint_litres": 8000
+    },
+    "chocolate": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 17196
+    },
+    "bread": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 1608
+    },
+    "butter": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 5553
+    },
+    "cheese": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 3178
+    },
+    "paper": {
+        "category": "Household",
+        "unit": "kg",
+        "water_footprint_litres": 10
+    },
+    "soap": {
+        "category": "Personal Care",
+        "unit": "kg",
+        "water_footprint_litres": 3500
+    },
+    "toothpaste": {
+        "category": "Personal Care",
+        "unit": "tube (100g)",
+        "water_footprint_litres": 150
+    },
+    "orange": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 560
+    },
+    "mango": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 1800
+    },
+    "lentils": {
+        "category": "Food",
+        "unit": "kg",
+        "water_footprint_litres": 5874
+    }
 }
